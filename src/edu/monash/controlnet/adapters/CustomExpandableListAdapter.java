@@ -1,8 +1,8 @@
 package edu.monash.controlnet.adapters;
 
-import java.util.ArrayList;
-
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +12,17 @@ import android.widget.TextView;
 import edu.monash.controlnet.R;
 import edu.monash.controlnet.model.NodeLocation;
 import edu.monash.controlnet.model.NodeZone;
+import org.json.JSONException;
 
-public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomExpandableListAdapter extends BaseExpandableListAdapter{
 	
 	private Context context;
-	private ArrayList<NodeZone> list_content;
+	private List<NodeZone> list_content;
 	
-	public CustomExpandableListAdapter(Context context, ArrayList<NodeZone> list_content){
+	public CustomExpandableListAdapter(Context context, List<NodeZone> list_content){
 		this.context = context;
 		this.list_content = list_content;
 	}
@@ -47,10 +51,18 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 		if(arg3 == null){
 			LayoutInflater inf = (LayoutInflater) 	context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			arg3 = inf.inflate(R.layout.expandable_child, null);
-			
 		}
-		TextView txtChild = (TextView) arg3.findViewById(R.id.txtExpandableChild);
-		txtChild.setText(list_content.get(arg0).getChildList().get(arg1).getAddress().toString());
+
+		TextView txtDevice = (TextView) arg3.findViewById(R.id.txtDevice);
+        TextView txtAddress = (TextView) arg3.findViewById(R.id.txtIPAddress);
+        try {
+            txtDevice.setText(getChild(arg0, arg1).getInfo().getString("Device"));
+            txtAddress.setText("IP: " + getChild(arg0, arg1).getAddress().toString().substring(1));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         Log.i("Expandable Adapter", "Child View is being created");
 		return arg3;
 	}
@@ -93,7 +105,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 			
 		}
 		
-		TextView txtParent = (TextView) arg2.findViewById(R.id.txtExapndableParent);
+		TextView txtParent = (TextView) arg2.findViewById(R.id.txtExapandableParent);
 		txtParent.setText(parent.getName());
         Log.i("Expandable Adapter", "Parent View is being created");
 		return arg2;

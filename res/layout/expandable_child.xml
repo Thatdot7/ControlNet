@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="48dp"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingTop="8dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp">
 
     <TextView
-        android:id="@+id/txtExpandableChild"
+        android:id="@+id/txtDevice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="Device" />
+    <TextView
+            android:id="@+id/txtIPAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="IP Address" />
 
 </LinearLayout>

@@ -1,27 +1,29 @@
 package edu.monash.controlnet.model;
 
+import org.json.JSONObject;
+
 import java.net.InetAddress;
 
 public class NodeLocation {
 	private InetAddress address;
-	private String node_type;
+	private JSONObject info;
 	
-	public NodeLocation(String node_type, InetAddress address) {
-		this.node_type = node_type;
+	public NodeLocation(JSONObject info, InetAddress address) {
+		this.info = info;
 		this.address = address;
 	}
 	
 	public void setAddress(InetAddress address){
 		this.address = address;
 	}
-	public void setNodeType(String node_type){
-		this.node_type = node_type;
+	public void setNodeType(JSONObject info){
+		this.info = info;
 	}
 	public InetAddress getAddress(){
 		return address;
 	}
-	public String getNodeType(){
-		return node_type;
+	public JSONObject getInfo(){
+		return info;
 	}
 	
 }
