@@ -2,6 +2,7 @@ package edu.monash.controlnet.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -37,9 +38,8 @@ public class MainActivity extends Activity implements ScanNetwork.NetworkResult{
         expandList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    Intent i = new Intent(getApplicationContext(), NodeSite.class);
-                    TextView txtIPAddress = (TextView) v.findViewById(R.id.txtIPAddress);
-                    i.putExtra("IP Address", expandAdapter.getChild(groupPosition, childPosition).getAddress().toString().substring(1));
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(expandAdapter.getChild(groupPosition, childPosition).getAddress().toString().substring(1)));
                     startActivity(i);
                 return false;
             }
