@@ -38,10 +38,12 @@ public class MainActivity extends Activity implements ScanNetwork.NetworkResult{
         expandList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(expandAdapter.getChild(groupPosition, childPosition).getAddress().toString().substring(1)));
-                    startActivity(i);
-                return false;
+                TextView address = (TextView) v.findViewById(R.id.txtIPAddress);
+                String url = "http://" + address.getText();
+                Intent launch_browser = new Intent(Intent.ACTION_VIEW);
+                launch_browser.setData(Uri.parse(url));
+                startActivity(launch_browser);
+                return true;
             }
         });
     }
