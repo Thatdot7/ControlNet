@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -27,7 +28,6 @@ public class MainActivity extends Activity implements ScanNetwork.NetworkResult{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtStatus = (TextView) findViewById(R.id.txtStatus);
         expandList = (ExpandableListView) findViewById(R.id.expandableListView1);
 
         if(savedInstanceState != null){
@@ -39,13 +39,28 @@ public class MainActivity extends Activity implements ScanNetwork.NetworkResult{
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 TextView address = (TextView) v.findViewById(R.id.txtIPAddress);
-                String url = "http://" + address.getText();
+                String url = "http://" + address.getText().toString().substring(4);
                 Intent launch_browser = new Intent(Intent.ACTION_VIEW);
                 launch_browser.setData(Uri.parse(url));
                 startActivity(launch_browser);
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_scan:
+                try {
+                    scanNetwork();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -57,10 +72,8 @@ public class MainActivity extends Activity implements ScanNetwork.NetworkResult{
     
     
     
-    public void scanNetwork(View view) throws IOException {
+    public void scanNetwork() throws IOException {
         new ScanNetwork(this).execute();
-
-        txtStatus.setText("The button has been clicked");
     }
 
     @Override
