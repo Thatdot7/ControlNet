@@ -22,6 +22,7 @@ public class ScanNetwork extends AsyncTask<Void, Void, Void> {
     private ProgressDialog dialog;
     List<NodeZone> result_list;
     NetworkResult mNetworkResult;
+    DhcpInfo dhcp;
 	
 	public ScanNetwork(Context context){
 		this.context = context;
@@ -35,7 +36,7 @@ public class ScanNetwork extends AsyncTask<Void, Void, Void> {
 
 	private InetAddress getBroadcastAddress() throws IOException {
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        DhcpInfo dhcp = wifi.getDhcpInfo();
+        dhcp = wifi.getDhcpInfo();
         // handle null somehow
 
         int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
@@ -60,10 +61,17 @@ public class ScanNetwork extends AsyncTask<Void, Void, Void> {
 		try {
 			DatagramSocket socket = new DatagramSocket();
 			socket.setBroadcast(true);
-	    	String data = "Oh Hai!";
-	    	DatagramPacket packet_send = new DatagramPacket(data.getBytes(), data.length(), getBroadcastAddress(), 1234);
+	    	JSONObject request_packet = new JSONObject();
+            try {
+                request_packet.put("type", "Device Request");
+                request_packet.put("source", null);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String data = request_packet.toString();
+            DatagramPacket packet_send = new DatagramPacket(data.getBytes(), data.length(), getBroadcastAddress(), 1234);
 	    	socket.send(packet_send);
-	    	Log.i("Packets Task", "Packet Sent");
 
 	    	socket.setSoTimeout(5000);
 
